@@ -1,170 +1,543 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Intelligent Access Verification System | Arrays & Stacks</title>
+<title>Access Verification System</title>
 <style>
-:root{--bg:#0b1020;--panel:#141c30;--panel2:#10182a;--text:#edf2ff;--muted:#9ba9c6;--line:#283653;--accent:#7c9cff;--accent2:#5de0c1;--danger:#ff8395;--gold:#ffd479}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0%,#1a2b50 0,transparent 34%),var(--bg);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text)}
-header{padding:32px 20px 24px;max-width:1120px;margin:auto} .eyebrow{color:var(--accent2);font-size:.78rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
-h1{font-size:clamp(1.8rem,4vw,3rem);line-height:1.1;margin:10px 0}header p{color:var(--muted);max-width:700px;line-height:1.6;margin-bottom:0}
-main{max-width:1120px;margin:auto;padding:0 20px 44px}.tabs{display:flex;gap:10px;margin:10px 0 18px;flex-wrap:wrap}
-button,.tab{border:1px solid var(--line);background:#1a2540;color:var(--text);padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;transition:.15s}
-button:hover,.tab:hover{border-color:var(--accent);transform:translateY(-1px)}button.primary{background:var(--accent);color:#091126;border-color:var(--accent)}button.danger{color:var(--danger)}button:disabled{opacity:.4;cursor:not-allowed;transform:none}
-.tab.active{background:var(--accent);color:#091126;border-color:var(--accent)}
-.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}.card{background:linear-gradient(145deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 14px 35px #0002}
-h2{font-size:1.15rem;margin:0 0 7px}h3{font-size:.95rem;margin:0 0 12px}.muted{color:var(--muted);font-size:.9rem;line-height:1.5}.field{display:grid;gap:7px;margin:14px 0}.field label{font-size:.82rem;color:var(--muted);font-weight:700}input,select{width:100%;background:#0b1325;border:1px solid var(--line);border-radius:9px;padding:11px;color:var(--text);font:inherit;outline:none}input:focus,select:focus{border-color:var(--accent)}
-.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.status{padding:10px 12px;border-radius:10px;background:#0b1325;border:1px solid var(--line);color:var(--muted);margin-top:12px;min-height:42px;font-size:.9rem}
-.table-wrap{overflow:auto;margin-top:12px}table{width:100%;border-collapse:collapse;min-width:360px;font-size:.88rem}th,td{text-align:left;padding:11px 8px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em}.pill{display:inline-block;border-radius:99px;padding:4px 8px;font-size:.75rem;font-weight:800}.yes{background:#153c3a;color:var(--accent2)}.no{background:#452333;color:var(--danger)}
-.array-visual{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.cell{min-width:76px;flex:1;border:1px solid #40557c;background:#0b1325;border-radius:10px;padding:12px 8px;text-align:center}.cell .index{font-size:.72rem;color:var(--muted)}.cell .value{font-size:.9rem;font-weight:800;overflow-wrap:anywhere;margin-top:5px}.cell small{color:var(--accent2)}
-.stack-area{display:flex;align-items:flex-end;justify-content:center;min-height:290px;padding:18px;background:#0b1325;border:1px dashed #40557c;border-radius:12px;margin-top:14px}.stack-list{width:min(100%,330px);display:flex;flex-direction:column-reverse;gap:7px}.stack-item{padding:13px;border:1px solid #45608b;border-radius:9px;background:#1b2b49;text-align:center;overflow-wrap:anywhere}.stack-item.top{border-color:var(--accent2);box-shadow:0 0 0 1px #5de0c155}.stack-item small{display:block;color:var(--muted);font-size:.72rem;margin-bottom:3px}.empty{color:var(--muted);text-align:center;padding:40px 10px}
-.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}.metric{background:#0b1325;border:1px solid var(--line);border-radius:12px;padding:13px}.metric strong{display:block;font-size:1.3rem}.metric span{color:var(--muted);font-size:.75rem}
-footer{max-width:1120px;margin:auto;padding:0 20px 28px;color:var(--muted);font-size:.8rem;line-height:1.5}
-[hidden]{display:none!important}
-@media(max-width:760px){.grid{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(3,1fr)}.card{padding:16px}}
+:root {
+  --bg: #f5f0ff;
+  --card: #fffaff;
+  --purple: #9275c9;
+  --dark: #5e477f;
+  --text: #352847;
+  --muted: #88799b;
+  --border: #e2d7f3;
+  --green: #e3f2e8;
+  --pink: #f9e5ef;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+}
+header, main, footer {
+  max-width: 1100px;
+  margin: auto;
+  padding: 25px;
+}
+header { padding-top: 40px; }
+.eyebrow {
+  color: var(--purple);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 12px;
+  font-weight: bold;
+}
+h1 {
+  font-family: Georgia, serif;
+  font-size: clamp(36px, 6vw, 60px);
+  font-weight: normal;
+  margin-bottom: 12px;
+}
+h1 em { color: var(--purple); }
+p { line-height: 1.6; }
+.muted { color: var(--muted); font-size: 14px; }
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 20px 0;
+}
+.metric, .card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 8px 25px #7359a00b;
+}
+.metric strong {
+  display: block;
+  font: 32px Georgia, serif;
+  margin-bottom: 6px;
+}
+.metric span { color: var(--muted); font-size: 12px; }
+.tabs, .actions {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin: 15px 0;
+}
+button {
+  background: white;
+  color: var(--dark);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+button:hover { background: #eee5ff; }
+button.primary, button.active {
+  background: var(--purple);
+  color: white;
+}
+button.danger { color: #b15d82; }
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+h2 { font: 25px Georgia, serif; }
+label {
+  display: block;
+  margin: 13px 0 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: bold;
+}
+input, select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: #fdfaff;
+  color: var(--text);
+  font: inherit;
+}
+input:focus, select:focus {
+  outline: 2px solid #d9cafa;
+}
+.status {
+  background: #f0e9fb;
+  padding: 12px;
+  border-radius: 9px;
+  font-size: 13px;
+  margin-top: 14px;
+  overflow-wrap: anywhere;
+}
+.array-visual {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 18px 0;
+}
+.cell {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+  flex: 1;
+  min-width: 75px;
+  overflow-wrap: anywhere;
+}
+.cell small, .cell .index {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+.cell .value { font-weight: bold; }
+.cell .allowed { color: #527c65; }
+.table-wrap { overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-top: 12px;
+}
+th, td {
+  text-align: left;
+  padding: 10px 6px;
+  border-bottom: 1px solid var(--border);
+}
+th { color: var(--muted); }
+.pill {
+  border-radius: 20px;
+  padding: 5px 7px;
+  white-space: nowrap;
+}
+.yes { background: var(--green); color: #527c65; }
+.no { background: var(--pink); color: #ad557b; }
+.stack-area {
+  min-height: 280px;
+  padding: 15px;
+  background: #f4edff;
+  border: 1px dashed #cbb8eb;
+  border-radius: 12px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin-top: 18px;
+}
+.stack-list {
+  width: 100%;
+  max-width: 330px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 7px;
+}
+.stack-item {
+  background: white;
+  border: 1px solid var(--border);
+  padding: 13px;
+  border-radius: 9px;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.stack-item.top {
+  background: var(--green);
+  border-color: #91b7a0;
+}
+.stack-item small {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.empty {
+  color: var(--muted);
+  text-align: center;
+  padding: 30px 5px;
+}
+footer { color: var(--muted); font-size: 12px; }
+[hidden] { display: none !important; }
+@media(max-width:750px) {
+  .grid { grid-template-columns: 1fr; }
+  .metrics { gap: 8px; }
+  .metric { padding: 12px; }
+  .metric strong { font-size: 25px; }
+  header, main, footer { padding: 16px; }
+}
 </style>
 </head>
 <body>
 <header>
-  <div class="eyebrow">Data Structures Micro-Project · CO-1</div>
-  <h1>Intelligent Access<br>Verification System</h1>
-  <p>A working browser-based demonstration of <strong>arrays</strong> for researcher records and <strong>stacks</strong> for recent security actions. Use sample records or add your own demo data.</p>
+  <div class="eyebrow">Data Structures · Micro-project</div>
+  <h1>Intelligent Access<br><em>Verification System</em></h1>
+  <p class="muted">A pastel lavender demonstration of arrays for researcher records and stacks for recent security actions.</p>
 </header>
+
 <main>
   <div class="metrics">
-    <div class="metric"><strong id="researcherCount">0</strong><span>Researcher records</span></div>
-    <div class="metric"><strong id="authorizedCount">0</strong><span>Authorized</span></div>
-    <div class="metric"><strong id="stackCount">0</strong><span>Stack actions</span></div>
+    <div class="metric"><strong id="researcherCount">0</strong><span>RESEARCHERS</span></div>
+    <div class="metric"><strong id="authorizedCount">0</strong><span>AUTHORIZED</span></div>
+    <div class="metric"><strong id="stackCount">0</strong><span>STACK ACTIONS</span></div>
   </div>
+
   <div class="tabs">
-    <button class="tab active" id="arrayTab" onclick="showModule('array')">▦ Array · Researchers</button>
-    <button class="tab" id="stackTab" onclick="showModule('stack')">▤ Stack · Security actions</button>
+    <button id="arrayTab" class="active" onclick="showModule('array')">01 · Array Records</button>
+    <button id="stackTab" onclick="showModule('stack')">02 · Security Stack</button>
   </div>
+
   <section id="arrayModule">
     <div class="grid">
       <div class="card">
-        <h2>Researcher record manager</h2>
-        <p class="muted">The array stores records in indexed positions. Add a researcher, search by ID, or inspect the records below.</p>
-        <div class="field"><label for="researcherId">Researcher ID</label><input id="researcherId" type="text" placeholder="e.g. R104"></div>
-        <div class="field"><label for="researcherName">Researcher name</label><input id="researcherName" type="text" placeholder="e.g. Asha Rao"></div>
-        <div class="field"><label for="researcherZone">Laboratory zone</label><select id="researcherZone"><option>General Lab</option><option>Research Lab</option><option>Restricted Lab</option></select></div>
-        <div class="field"><label for="researcherStatus">Permission status</label><select id="researcherStatus"><option value="yes">Authorized</option><option value="no">Not authorized</option></select></div>
-        <div class="actions"><button class="primary" onclick="addResearcher()">+ Add to array</button><button onclick="clearForm()">Clear</button></div>
-        <div class="field"><label for="searchId">Search researcher by ID</label><input id="searchId" type="text" placeholder="Enter an ID"></div>
-        <div class="actions"><button onclick="searchResearcher()">Search array</button><button class="danger" onclick="resetResearchers()">Reset sample records</button></div>
-        <div id="arrayStatus" class="status" role="status">Ready. Try searching for R101.</div>
+        <h2>Researcher Records</h2>
+        <p class="muted">Add, display and search researcher records stored in an array.</p>
+
+        <label for="researcherId">RESEARCHER ID</label>
+        <input id="researcherId" placeholder="e.g. R104">
+
+        <label for="researcherName">FULL NAME</label>
+        <input id="researcherName" placeholder="e.g. Asha Rao">
+
+        <label for="researcherZone">LABORATORY ZONE</label>
+        <select id="researcherZone">
+          <option>General Lab</option>
+          <option>Research Lab</option>
+          <option>Restricted Lab</option>
+        </select>
+
+        <label for="researcherStatus">PERMISSION</label>
+        <select id="researcherStatus">
+          <option value="yes">Authorized</option>
+          <option value="no">Not authorized</option>
+        </select>
+
+        <div class="actions">
+          <button class="primary" onclick="addResearcher()">+ Add Researcher</button>
+          <button onclick="clearForm()">Clear</button>
+        </div>
+
+        <label for="searchId">SEARCH BY ID</label>
+        <input id="searchId" placeholder="Enter researcher ID">
+
+        <div class="actions">
+          <button onclick="searchResearcher()">Search Array</button>
+          <button class="danger" onclick="resetResearchers()">Reset Samples</button>
+        </div>
+        <div id="arrayStatus" class="status">Ready. Try searching for R101.</div>
       </div>
+
       <div class="card">
-        <h2>Array visualizer</h2>
-        <p class="muted">Each box is one array index. Array indexing starts at 0.</p>
+        <h2>Array Visualizer</h2>
+        <p class="muted">Each box represents one array index, starting from zero.</p>
         <div id="arrayVisual" class="array-visual"></div>
         <div class="table-wrap">
-          <table><thead><tr><th>ID</th><th>Name</th><th>Zone</th><th>Permission</th></tr></thead><tbody id="researcherRows"></tbody></table>
+          <table>
+            <thead><tr><th>ID</th><th>Name</th><th>Zone</th><th>Status</th></tr></thead>
+            <tbody id="researcherRows"></tbody>
+          </table>
         </div>
       </div>
     </div>
   </section>
+
   <section id="stackModule" hidden>
     <div class="grid">
       <div class="card">
-        <h2>Security action stack</h2>
-        <p class="muted">The stack follows <strong>LIFO</strong> (Last In, First Out). Push adds an action to the top; pop removes the most recent action.</p>
-        <div class="field"><label for="actionInput">Security action</label><input id="actionInput" type="text" placeholder="e.g. Access denied for R104"></div>
-        <div class="actions"><button class="primary" onclick="pushAction()">↑ Push action</button><button onclick="popAction()">↓ Pop top</button><button onclick="peekAction()">Peek top</button><button onclick="displayStack()">Display stack</button></div>
-        <div id="stackStatus" class="status" role="status">Ready. Add an action to begin.</div>
-        <p class="muted">Demo stack capacity: 10 actions. A real security system should store durable, protected audit logs; this demo is only for learning.</p>
+        <h2>Security Action Stack</h2>
+        <p class="muted">A stack uses LIFO: Last In, First Out. The latest action is removed first.</p>
+        <label for="actionInput">SECURITY ACTION</label>
+        <input id="actionInput" placeholder="e.g. Access denied for R104">
+        <div class="actions">
+          <button class="primary" onclick="pushAction()">Push ↑</button>
+          <button onclick="popAction()">Pop ↓</button>
+          <button onclick="peekAction()">Peek Top</button>
+          <button onclick="displayStack()">Display</button>
+        </div>
+        <div id="stackStatus" class="status">Ready. Add an action to begin.</div>
+        <p class="muted">Demo stack capacity: 10 actions.</p>
       </div>
+
       <div class="card">
-        <h2>Stack visualizer</h2>
-        <p class="muted">The highlighted item is the top of the stack.</p>
-        <div class="stack-area"><div id="stackVisual" class="stack-list"><div class="empty">Stack is empty</div></div></div>
-        <div class="actions"><button class="danger" onclick="resetStack()">Clear stack</button></div>
+        <h2>Stack Visualizer</h2>
+        <p class="muted">The green-highlighted item is the top of the stack.</p>
+        <div class="stack-area">
+          <div id="stackVisual" class="stack-list"></div>
+        </div>
+        <div class="actions"><button class="danger" onclick="resetStack()">Clear Stack</button></div>
       </div>
     </div>
   </section>
 </main>
-<footer>Educational simulation only. No real biometric authentication, NFC reader, door controller, or permanent database is connected. Data resets when the page is refreshed.</footer>
+
+<footer>Educational simulation only. It does not connect to real fingerprint sensors, NFC readers, door locks or a permanent database. Data resets when the page is refreshed.</footer>
+
 <script>
-const MAX_RECORDS=100, MAX_STACK=10;
-let researchers=[
- {id:"R101",name:"Asha Rao",zone:"General Lab",authorized:true},
- {id:"R102",name:"Kiran Das",zone:"Research Lab",authorized:true},
- {id:"R103",name:"Mira Shah",zone:"Restricted Lab",authorized:false}
+const MAX_RECORDS = 100;
+const MAX_STACK = 10;
+
+let researchers = [
+  {id:"R101",name:"Asha Rao",zone:"General Lab",authorized:true},
+  {id:"R102",name:"Kiran Das",zone:"Research Lab",authorized:true},
+  {id:"R103",name:"Mira Shah",zone:"Restricted Lab",authorized:false}
 ];
-let actions=["Access granted for R101","Permission updated for R102"];
-function showModule(which){
- document.getElementById("arrayModule").hidden=which!=="array";
- document.getElementById("stackModule").hidden=which!=="stack";
- document.getElementById("arrayTab").classList.toggle("active",which==="array");
- document.getElementById("stackTab").classList.toggle("active",which==="stack");
+
+let actions = [
+  "Access granted for R101",
+  "Permission updated for R102"
+];
+
+function showModule(which) {
+  document.getElementById("arrayModule").hidden = which !== "array";
+  document.getElementById("stackModule").hidden = which !== "stack";
+  document.getElementById("arrayTab").classList.toggle("active",which === "array");
+  document.getElementById("stackTab").classList.toggle("active",which === "stack");
 }
-function setStatus(id,msg){document.getElementById(id).textContent=msg;}
-function updateMetrics(){
- document.getElementById("researcherCount").textContent=researchers.length;
- document.getElementById("authorizedCount").textContent=researchers.filter(r=>r.authorized).length;
- document.getElementById("stackCount").textContent=actions.length;
+
+function setStatus(id,message) {
+  document.getElementById(id).textContent = message;
 }
-function renderResearchers(){
- const visual=document.getElementById("arrayVisual"), rows=document.getElementById("researcherRows");
- visual.innerHTML=""; rows.innerHTML="";
- if(!researchers.length){visual.innerHTML='<div class="empty">Array is empty</div>';rows.innerHTML='<tr><td colspan="4">No records</td></tr>';updateMetrics();return;}
- researchers.forEach((r,i)=>{
-  const cell=document.createElement("div");cell.className="cell";
-  const idx=document.createElement("div");idx.className="index";idx.textContent="Index "+i;
-  const val=document.createElement("div");val.className="value";val.textContent=r.id;
-  const small=document.createElement("small");small.textContent=r.authorized?"Authorized":"Denied";
-  cell.append(idx,val,small);visual.appendChild(cell);
-  const tr=document.createElement("tr");
-  [r.id,r.name,r.zone].forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.appendChild(td);});
-  const td=document.createElement("td"), pill=document.createElement("span");pill.className="pill "+(r.authorized?"yes":"no");pill.textContent=r.authorized?"Authorized":"Denied";td.appendChild(pill);tr.appendChild(td);rows.appendChild(tr);
- });
- updateMetrics();
+
+function updateMetrics() {
+  document.getElementById("researcherCount").textContent = researchers.length;
+  document.getElementById("authorizedCount").textContent = researchers.filter(r => r.authorized).length;
+  document.getElementById("stackCount").textContent = actions.length;
 }
-function renderStack(){
- const visual=document.getElementById("stackVisual");visual.innerHTML="";
- if(!actions.length){visual.innerHTML='<div class="empty">Stack is empty</div>';updateMetrics();return;}
- for(let i=actions.length-1;i>=0;i--){
-  const item=document.createElement("div");item.className="stack-item"+(i===actions.length-1?" top":"");
-  const label=document.createElement("small");label.textContent=i===actions.length-1?"TOP · index "+i:"index "+i;
-  const value=document.createElement("div");value.textContent=actions[i];item.append(label,value);visual.appendChild(item);
- }
- updateMetrics();
+
+function renderResearchers() {
+  const visual = document.getElementById("arrayVisual");
+  const rows = document.getElementById("researcherRows");
+  visual.innerHTML = "";
+  rows.innerHTML = "";
+
+  if (researchers.length === 0) {
+    visual.innerHTML = '<div class="empty">Array is empty</div>';
+    rows.innerHTML = '<tr><td colspan="4">No records</td></tr>';
+    updateMetrics();
+    return;
+  }
+
+  researchers.forEach((r,i) => {
+    const cell = document.createElement("div");
+    cell.className = "cell";
+
+    const index = document.createElement("small");
+    index.className = "index";
+    index.textContent = "INDEX " + i;
+
+    const value = document.createElement("div");
+    value.className = "value";
+    value.textContent = r.id;
+
+    const status = document.createElement("small");
+    status.className = r.authorized ? "allowed" : "";
+    status.textContent = r.authorized ? "AUTHORIZED" : "DENIED";
+
+    cell.append(index,value,status);
+    visual.appendChild(cell);
+
+    const tr = document.createElement("tr");
+    [r.id,r.name,r.zone].forEach(value => {
+      const td = document.createElement("td");
+      td.textContent = value;
+      tr.appendChild(td);
+    });
+
+    const td = document.createElement("td");
+    const pill = document.createElement("span");
+    pill.className = "pill " + (r.authorized ? "yes" : "no");
+    pill.textContent = r.authorized ? "Authorized" : "Denied";
+    td.appendChild(pill);
+    tr.appendChild(td);
+    rows.appendChild(tr);
+  });
+
+  updateMetrics();
 }
-function addResearcher(){
- const id=document.getElementById("researcherId").value.trim(), name=document.getElementById("researcherName").value.trim();
- const zone=document.getElementById("researcherZone").value, authorized=document.getElementById("researcherStatus").value==="yes";
- if(!id||!name){setStatus("arrayStatus","Please enter both a researcher ID and name.");return;}
- if(researchers.length>=MAX_RECORDS){setStatus("arrayStatus","Array is full (100 records).");return;}
- if(researchers.some(r=>r.id.toLowerCase()===id.toLowerCase())){setStatus("arrayStatus","That ID already exists. Use a unique researcher ID.");return;}
- researchers.push({id,name,zone,authorized});renderResearchers();setStatus("arrayStatus","Added "+name+" at array index "+(researchers.length-1)+".");clearForm();
+
+function renderStack() {
+  const visual = document.getElementById("stackVisual");
+  visual.innerHTML = "";
+
+  if (actions.length === 0) {
+    visual.innerHTML = '<div class="empty">Stack is empty</div>';
+    updateMetrics();
+    return;
+  }
+
+  for (let i = actions.length - 1; i >= 0; i--) {
+    const item = document.createElement("div");
+    item.className = "stack-item" + (i === actions.length - 1 ? " top" : "");
+
+    const label = document.createElement("small");
+    label.textContent = (i === actions.length - 1 ? "TOP · " : "") + "INDEX " + i;
+
+    const value = document.createElement("div");
+    value.textContent = actions[i];
+
+    item.append(label,value);
+    visual.appendChild(item);
+  }
+
+  updateMetrics();
 }
-function clearForm(){["researcherId","researcherName"].forEach(id=>document.getElementById(id).value="");}
-function searchResearcher(){
- const id=document.getElementById("searchId").value.trim();
- if(!id){setStatus("arrayStatus","Enter an ID to search.");return;}
- const index=researchers.findIndex(r=>r.id.toLowerCase()===id.toLowerCase());
- if(index<0){setStatus("arrayStatus","No researcher found with ID "+id+". Linear search checked the array.");return;}
- const r=researchers[index];setStatus("arrayStatus","Found at index "+index+": "+r.name+" · "+r.zone+" · "+(r.authorized?"Authorized":"Not authorized")+".");
+
+function addResearcher() {
+  const id = document.getElementById("researcherId").value.trim();
+  const name = document.getElementById("researcherName").value.trim();
+  const zone = document.getElementById("researcherZone").value;
+  const authorized = document.getElementById("researcherStatus").value === "yes";
+
+  if (!id || !name) {
+    setStatus("arrayStatus","Please enter both a researcher ID and name.");
+    return;
+  }
+  if (researchers.length >= MAX_RECORDS) {
+    setStatus("arrayStatus","Array is full.");
+    return;
+  }
+  if (researchers.some(r => r.id.toLowerCase() === id.toLowerCase())) {
+    setStatus("arrayStatus","That ID already exists. Use a unique ID.");
+    return;
+  }
+
+  researchers.push({id,name,zone,authorized});
+  renderResearchers();
+  setStatus("arrayStatus","Added " + name + " at array index " + (researchers.length - 1) + ".");
+  clearForm();
 }
-function resetResearchers(){researchers=[{id:"R101",name:"Asha Rao",zone:"General Lab",authorized:true},{id:"R102",name:"Kiran Das",zone:"Research Lab",authorized:true},{id:"R103",name:"Mira Shah",zone:"Restricted Lab",authorized:false}];renderResearchers();setStatus("arrayStatus","Sample researcher records restored.");}
-function pushAction(){
- const input=document.getElementById("actionInput"), value=input.value.trim();
- if(!value){setStatus("stackStatus","Enter a security action first.");return;}
- if(actions.length>=MAX_STACK){setStatus("stackStatus","Stack overflow: maximum capacity is 10 actions.");return;}
- actions.push(value);input.value="";renderStack();setStatus("stackStatus","Pushed action onto top of stack. Top index: "+(actions.length-1)+".");
+
+function clearForm() {
+  document.getElementById("researcherId").value = "";
+  document.getElementById("researcherName").value = "";
 }
-function popAction(){
- if(!actions.length){setStatus("stackStatus","Stack underflow: there are no actions to remove.");return;}
- const removed=actions.pop();renderStack();setStatus("stackStatus","Popped latest action: "+removed);
+
+function searchResearcher() {
+  const id = document.getElementById("searchId").value.trim();
+  if (!id) {
+    setStatus("arrayStatus","Enter an ID to search.");
+    return;
+  }
+
+  const index = researchers.findIndex(r => r.id.toLowerCase() === id.toLowerCase());
+  if (index === -1) {
+    setStatus("arrayStatus","Researcher not found. Linear search checked the array.");
+    return;
+  }
+
+  const r = researchers[index];
+  setStatus("arrayStatus","Found at index " + index + ": " + r.name + " · " + r.zone + " · " + (r.authorized ? "Authorized" : "Not authorized") + ".");
 }
-function peekAction(){
- if(!actions.length){setStatus("stackStatus","Stack is empty; nothing to peek.");return;}
- setStatus("stackStatus","Top action (not removed): "+actions[actions.length-1]);
+
+function resetResearchers() {
+  researchers = [
+    {id:"R101",name:"Asha Rao",zone:"General Lab",authorized:true},
+    {id:"R102",name:"Kiran Das",zone:"Research Lab",authorized:true},
+    {id:"R103",name:"Mira Shah",zone:"Restricted Lab",authorized:false}
+  ];
+  renderResearchers();
+  setStatus("arrayStatus","Sample records restored.");
 }
-function displayStack(){setStatus("stackStatus",actions.length?"Displaying "+actions.length+" actions from top to bottom.":"Stack is empty.");renderStack();}
-function resetStack(){actions=[];renderStack();setStatus("stackStatus","Stack cleared.");}
-renderResearchers();renderStack();
+
+function pushAction() {
+  const input = document.getElementById("actionInput");
+  const value = input.value.trim();
+
+  if (!value) {
+    setStatus("stackStatus","Enter a security action first.");
+    return;
+  }
+  if (actions.length >= MAX_STACK) {
+    setStatus("stackStatus","Stack overflow: maximum capacity is 10.");
+    return;
+  }
+
+  actions.push(value);
+  input.value = "";
+  renderStack();
+  setStatus("stackStatus","Action pushed onto the stack. Top index: " + (actions.length - 1) + ".");
+}
+
+function popAction() {
+  if (actions.length === 0) {
+    setStatus("stackStatus","Stack underflow: no actions to remove.");
+    return;
+  }
+
+  const removed = actions.pop();
+  renderStack();
+  setStatus("stackStatus","Popped latest action: " + removed);
+}
+
+function peekAction() {
+  if (actions.length === 0) {
+    setStatus("stackStatus","Stack is empty.");
+    return;
+  }
+
+  setStatus("stackStatus","Top action: " + actions[actions.length - 1]);
+}
+
+function displayStack() {
+  renderStack();
+  setStatus("stackStatus",actions.length ? "Showing actions from top to bottom." : "Stack is empty.");
+}
+
+function resetStack() {
+  actions = [];
+  renderStack();
+  setStatus("stackStatus","Stack cleared.");
+}
+
+renderResearchers();
+renderStack();
 </script>
 </body>
 </html>
